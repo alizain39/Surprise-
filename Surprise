@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sawera! 💖</title>
+    <!-- Google Fonts & Canvas Confetti CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        /* Container Card */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            padding: 40px 25px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(230, 100, 140, 0.25);
+            position: relative;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Screen Management */
+        .step {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) forwards;
+        }
+
+        .step.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Typography */
+        h1 {
+            color: #d63031;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: #e84393;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: #4a4a4a;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .italic-text {
+            font-style: italic;
+            color: #d63031;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .small-text {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #e84393;
+        }
+
+        /* Input Box Styling */
+        .input-box {
+            width: 80%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #e84393;
+            border-radius: 25px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .error-msg {
+            color: #d63031;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: none;
+            margin-top: 5px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.35);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.5);
+        }
+
+        .btn-secondary {
+            background: #a4b0be;
+            box-shadow: 0 6px 20px rgba(164, 176, 190, 0.35);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Emojis & Icons */
+        .big-icon {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Age Number Animation */
+        .age-number {
+            font-size: 5rem;
+            font-weight: 800;
+            color: #ff4757;
+            text-shadow: 3px 3px 0px #fecfef, 6px 6px 0px rgba(0,0,0,0.1);
+            animation: pulse 1.5s infinite alternate;
+            margin: 10px 0;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* Interactive Cake */
+        .cake-container {
+            position: relative;
+            margin: 20px auto;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .cake-emoji {
+            font-size: 6.5rem;
+            transition: all 0.5s ease;
+        }
+
+        .knife-emoji {
+            font-size: 3rem;
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            animation: floatKnife 1.5s infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes floatKnife {
+            from { transform: rotate(0deg) translateY(0); }
+            to { transform: rotate(-15deg) translateY(-8px); }
+        }
+
+        .cut-status {
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Interactive Envelope / Card */
+        .envelope-container {
+            width: 140px;
+            height: 100px;
+            background: #ff758c;
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 117, 140, 0.4);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.05);
+            background: #ff4757;
+        }
+
+        .envelope-icon {
+            font-size: 3.5rem;
+            color: #ffffff;
+        }
+
+        /* Heart Badge */
+        .heart-badge {
+            display: inline-block;
+            background: #ffeaa7;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #d63031;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- STEP 0: Ask Name (Verification 1) -->
+        <div class="step active" id="step-0">
+            <div class="big-icon">🔒</div>
+            <h2>Who are you? 🌸</h2>
+            <p>Please enter your name to unlock your birthday surprise!</p>
+            <input type="text" id="nameInput" class="input-box" placeholder="Enter your name...">
+            <p class="error-msg" id="nameError">Oops! Wrong name, try again! 🙈</p>
+            <button class="btn" onclick="verifyName()">Submit ✨</button>
+        </div>
+
+        <!-- STEP 0.5: Ask Future Husband Name (Verification 2) -->
+        <div class="step" id="step-husband">
+            <div class="big-icon">💍</div>
+            <h2>One Secret Question... 😉</h2>
+            <p>Enter your Future Husband's name to proceed!</p>
+            <input type="text" id="husbandInput" class="input-box" placeholder="Enter husband's name...">
+            <p class="error-msg" id="husbandError">Incorrect answer! Think again! ❤️</p>
+            <button class="btn" onclick="verifyHusband()">Unlock 🎉</button>
+        </div>
+
+        <!-- STEP 1: Welcome & Ready -->
+        <div class="step" id="step-1">
+            <div class="big-icon">🎁</div>
+            <h1>Hey Sawera! 💖</h1>
+            <p>Somebody told me today is a super special day... Are you ready for your surprise?</p>
+            <button class="btn" onclick="nextStep(2)">Yes, I'm ready! ✨</button>
+        </div>
+
+        <!-- STEP 2: Age Celebration -->
+        <div class="step" id="step-2">
+            <h2>Happy Birthday! 🎉</h2>
+            <p>You are officially turning...</p>
+            <div class="age-number">18</div>
+            <p class="italic-text">Welcome to adulthood! 🥳✨</p>
+            <p class="small-text">(Don't worry, you still get to act like a kid whenever you want!)</p>
+            <button class="btn" onclick="nextStep(3)">Time to celebrate! 🎂</button>
+        </div>
+
+        <!-- STEP 3: Cake Cutting -->
+        <div class="step" id="step-3">
+            <h2>Cut the Cake! 🍰</h2>
+            <p>Tap the knife or the cake to slice your birthday cake!</p>
+            
+            <div class="cake-container" id="cake-box" onclick="cutCake()">
+                <div class="cake-emoji" id="cake-emoji">🎂</div>
+                <div class="knife-emoji" id="knife-emoji">🔪</div>
+            </div>
+            
+            <p class="cut-status" id="cut-status">✨ YAY! You cut the cake! ✨</p>
+            
+            <button class="btn" id="cake-next-btn" style="display: none;" onclick="nextStep(4)">Make a Wish 🌟</button>
+        </div>
+
+        <!-- STEP 4: Make a Wish Envelope -->
+        <div class="step" id="step-4">
+            <h2>Make a Wish 🌠</h2>
+            <p>Close your eyes, make a special wish, and click the envelope to send it to the universe!</p>
+            
+            <div class="envelope-container" onclick="openEnvelope()">
+                <div class="envelope-icon" id="envelope-icon">✉️</div>
+            </div>
+            
+            <p id="wish-status" style="display: none;" class="italic-text">Your wish has been locked in! 🔒✨</p>
+            
+            <button class="btn" id="wish-next-btn" style="display: none;" onclick="nextStep(5)">Read Your Card 💌</button>
+        </div>
+
+        <!-- STEP 5: Final Love Note -->
+        <div class="step" id="step-5">
+            <span class="heart-badge">💖 To Sawera 💖</span>
+            <h1 class="script-font">Dearest Sawera,</h1>
+            <p>Wishing you a year filled with endless laughter, amazing adventures, love, and success. May all your dreams come true!</p>
+            <p class="italic-text">Keep shining bright and being the incredible person you are! 🌟</p>
+            <div class="btn-group">
+                <button class="btn" onclick="triggerMassiveConfetti()">More Confetti! 🎉</button>
+                <button class="btn btn-secondary" onclick="restartExperience()">Start Over 🔄</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let cakeIsCut = false;
+
+        // Verify Step 1: Name Verification (Sawera)
+        function verifyName() {
+            const name = document.getElementById('nameInput').value.trim().toLowerCase();
+            const error = document.getElementById('nameError');
+            
+            if (name === 'sawera') {
+                error.style.display = 'none';
+                showStep('step-husband');
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        // Verify Step 2: Future Husband Verification (Zain)
+        function verifyHusband() {
+            const husbandName = document.getElementById('husbandInput').value.trim().toLowerCase();
+            const error = document.getElementById('husbandError');
+            
+            if (husbandName === 'zain') {
+                error.style.display = 'none';
+                showStep('step-1');
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        // Helper function to switch steps
+        function showStep(stepId) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => step.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        // Navigation for general steps
+        function nextStep(stepNumber) {
+            showStep(`step-${stepNumber}`);
+
+            // Fire confetti automatically on specific steps
+            if (stepNumber === 2) {
+                fireConfetti();
+            } else if (stepNumber === 5) {
+                triggerMassiveConfetti();
+            }
+        }
+
+        // Interactive Step 3: Cut Cake Logic
+        function cutCake() {
+            if (cakeIsCut) return;
+            
+            cakeIsCut = true;
+            const cakeEmoji = document.getElementById('cake-emoji');
+            const knifeEmoji = document.getElementById('knife-emoji');
+            const cutStatus = document.getElementById('cut-status');
+            const cakeNextBtn = document.getElementById('cake-next-btn');
+
+            cakeEmoji.textContent = '🍰';
+            knifeEmoji.style.display = 'none';
+            cutStatus.style.opacity = '1';
+            cakeNextBtn.style.display = 'inline-block';
+
+            fireConfetti();
+        }
+
+        // Interactive Step 4: Wish Envelope Logic
+        function openEnvelope() {
+            const envelopeIcon = document.getElementById('envelope-icon');
+            const wishStatus = document.getElementById('wish-status');
+            const wishNextBtn = document.getElementById('wish-next-btn');
+
+            envelopeIcon.textContent = '💌';
+            wishStatus.style.display = 'block';
+            wishNextBtn.style.display = 'inline-block';
+
+            fireConfetti();
+        }
+
+        // Confetti Burst
+        function fireConfetti() {
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Massive Celebration Confetti Spray
+        function triggerMassiveConfetti() {
+            const count = 200;
+            const defaults = { origin: { y: 0.7 } };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        // Reset experience back to step 1
+        function restartExperience() {
+            cakeIsCut = false;
+            document.getElementById('cake-emoji').textContent = '🎂';
+            document.getElementById('knife-emoji').style.display = 'block';
+            document.getElementById('cut-status').style.opacity = '0';
+            document.getElementById('cake-next-btn').style.display = 'none';
+
+            document.getElementById('envelope-icon').textContent = '✉️';
+            document.getElementById('wish-status').style.display = 'none';
+            document.getElementById('wish-next-btn').style.display = 'none';
+
+            showStep('step-1');
+        }
+    </script>
+</body>
+</html>
